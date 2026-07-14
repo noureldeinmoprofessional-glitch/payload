@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { buildConfig } from 'payload'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage } from '@payloadcms/storage-s3'
 import sharp from 'sharp'
 
 import { Users } from './collections/Users'
@@ -37,4 +38,27 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
+  plugins: [
+    // Store media uploads in Cloudflare R2 (S3-compatible) instead of the local
+    // filesystem. Required on Vercel (read-only/ephemeral disk). If the R2 env
+    // vars are unset the plugin disables itself and Payload falls back to local
+    // disk — fine for `npm run dev`.
+    s3Storage({
+      enabled: Boolean(process.env.R2_BUCKET),
+      collections: {
+        media: true,
+      },
+      bucket: process.env.R2_BUCKET || '',
+      config: {
+        endpoint: process.env.R2_ENDPOINT || '',
+        region: 'auto',
+        credentials: {
+          accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+        },
+        // R2 requires path-style URLs.
+        forcePathStyle: true,
+      },
+    }),
+  ],
 })
