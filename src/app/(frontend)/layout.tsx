@@ -1,6 +1,16 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import { Cairo } from 'next/font/google'
 import './styles.css'
+
+// Self-hosted, optimized font. Eliminates the render-blocking Google Fonts
+// request and — via Next's automatic size-adjusted fallback — removes the
+// layout shift (CLS) that the swap on the large hero heading was causing.
+const cairo = Cairo({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-cairo',
+})
 
 export const metadata: Metadata = {
   title: 'The Knowledge Club™ — Empowering Minds & Shaping Futures',
@@ -10,14 +20,11 @@ export const metadata: Metadata = {
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={cairo.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
+        {/* Warm up connections to the image origins for faster LCP */}
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://87404fcf36d406d8f48adc48bb2130ab.r2.cloudflarestorage.com" crossOrigin="anonymous" />
       </head>
       <body>{children}</body>
     </html>

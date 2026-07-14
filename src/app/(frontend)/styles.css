@@ -13,7 +13,7 @@
   --sh-sm:0 8px 20px rgba(0,0,0,.06); --sh-md:0 16px 40px rgba(0,0,0,.08);
   --sh-lg:0 30px 80px rgba(0,0,0,.12); --sh-hover:0 40px 90px rgba(0,0,0,.14);
   --max:1280px; --pad:80px; --nav-h:88px;
-  --f:'Cairo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f:var(--font-cairo),'Cairo',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}

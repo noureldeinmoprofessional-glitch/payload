@@ -5,7 +5,9 @@ import { Icon, categoryIcon } from './icons'
 import { imgSrc, imgAlt } from './media'
 import Motion from './Motion'
 
-export const dynamic = 'force-dynamic'
+// ISR: serve a cached, statically-rendered page (fast TTFB → better LCP/Speed
+// Index) and re-render at most once a minute so CMS edits still show up.
+export const revalidate = 60
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -118,10 +120,16 @@ export default async function HomePage() {
 
               <div className="hero__visual">
                 <div className="hero-card main">
+                  {/* LCP image — eager + high priority, explicit dimensions to reserve space */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={imgSrc(h.heroImage, h.heroExternalImage, 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80&auto=format&fit=crop')}
+                    src={imgSrc(h.heroImage, h.heroExternalImage, 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=75&auto=format&fit=crop')}
                     alt={imgAlt(h.heroImage, 'Professionals engaged at a Knowledge Club leadership conference')}
+                    width={900}
+                    height={560}
+                    // @ts-expect-error fetchPriority is valid HTML but not yet in React's img types
+                    fetchpriority="high"
+                    decoding="async"
                   />
                 </div>
                 <div className="hero-float f1" data-parallax="0.4">
