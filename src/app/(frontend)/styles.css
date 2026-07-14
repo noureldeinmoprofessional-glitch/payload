@@ -69,8 +69,16 @@ h6,.h6{font-size:18px;line-height:1.4;font-weight:600;}
 
 .nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:1000;display:flex;align-items:center;transition:background .4s,box-shadow .4s,backdrop-filter .4s;}
 .nav.scrolled{background:rgba(250,250,250,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);box-shadow:0 1px 0 var(--border),var(--sh-sm);}
+/* At the top the nav is transparent over the dark hero — use light text so it stays legible. */
+.nav:not(.scrolled) .brand,
+.nav:not(.scrolled) .nav-brochure,
+.nav:not(.scrolled) .nav-links a{color:#fff;}
+.nav:not(.scrolled) .brand small{color:rgba(255,255,255,.72);}
+.nav:not(.scrolled) .nav-links a:hover{color:var(--gold-hover);}
+.nav:not(.scrolled) .burger span{background:#fff;}
 .nav .container{display:flex;align-items:center;justify-content:space-between;gap:32px;}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:-.01em;}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px;letter-spacing:-.01em;white-space:nowrap;}
+.brand small{white-space:nowrap;}
 .brand .mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--gold),var(--gold-pressed));box-shadow:var(--sh-sm);flex:none;}
 .brand .mark svg{width:22px;height:22px;}
 .brand small{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.06em;}
@@ -370,6 +378,21 @@ html:not(.gsap-ready) .reveal{opacity:1;transform:none;}
 }
 @media(max-width:768px){
   :root{--pad:24px;}
+  /* Nav: keep it to a single tidy row */
+  .brand{font-size:17px;}
+  .brand .mark{width:36px;height:36px;}
+  .brand small{display:none;}       /* tagline was wrapping into a 2nd line */
+  .nav-brochure{display:none;}      /* still available inside the mobile menu */
+  .nav-cta .btn{display:none;}
+  /* Hero visual: pull floating cards back inside the screen + shrink them */
+  .hero-float{padding:12px 14px;border-radius:16px;gap:10px;}
+  .hero-float .ic{width:36px;height:36px;}
+  .hero-float .ic svg{width:18px;height:18px;}
+  .hero-float b{font-size:13px;}
+  .hero-float span{font-size:11px;}
+  .hero-float.f1{top:10px;left:-4px;}
+  .hero-float.f2{right:-4px;bottom:14px;}
+  .scroll-ind{display:none;}        /* overlapped the image/cards on mobile */
   .hero__stats{grid-template-columns:repeat(2,1fr);gap:28px 20px;}
   .event-grid,.cat-grid,.benefit-grid{grid-template-columns:1fr;}
   .num-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
@@ -381,7 +404,6 @@ html:not(.gsap-ready) .reveal{opacity:1;transform:none;}
   .journey__line{display:none;}
   .j-step p{display:block;}
   .footer__top{grid-template-columns:1fr;}
-  .nav-cta .btn{display:none;}
 }
 @media(max-width:480px){
   .hero__stats{grid-template-columns:repeat(2,1fr);}
